@@ -1,15 +1,16 @@
 <template>
   <div id="app">
-    <h1>heeelo</h1>
+    <router-view/>
+    <main-tab-bar/>
   </div>
 </template>
 
 <script>
-
+import MainTabBar from 'components/content/MainTabBar.vue'
 export default {
   name: 'App',
   components: {
-    
+    MainTabBar
   }
 }
 </script>
