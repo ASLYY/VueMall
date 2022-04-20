@@ -19,7 +19,7 @@ export default {
     activeColor: {
       type:String,
       default:'red'
-    }
+    } 
   },
   data() {
     return {
@@ -28,7 +28,7 @@ export default {
   },
   computed: {
     isActive() {
-      return this.$route.path === this.path
+      return this.$route.path.indexOf(this.path) !== -1
     },
     activeStyle() {
       return this.isActive ? {color: this.activeColor} : {}
@@ -36,12 +36,12 @@ export default {
   },
   methods: {
     itemClick() {
-      this.$router.replace(this.path).catch((error) => error);
+      this.$router.replace(this.path)
     }
   },
 }
 </script>
-<style>
+<style scoped>
   .tabbar-item{
     flex: 1;
     text-align: center;
