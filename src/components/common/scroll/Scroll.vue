@@ -34,30 +34,39 @@ export default {
         probeType: this.probeType,
         click: true,
         pullUpLoad: true,
-        observeDOM: true
+        observeDOM: true,
+        observeImage: true
       })
 
 
       //监听滚动区域 
-      this.scroll.on('scroll', (position) => {
+      if(this.probeType === 2 || this.probeType === 3) {
+        this.scroll.on('scroll', (position) => {
         // console.log(position)
-        this.$emit("scroll", position)
-      })
-
+          this.$emit("scroll", position)
+        })
+      }
+      
+    // 监听scroll滚到到底部 进行加载
+    if(this.pullUpLoad) {
       this.scroll.on('pullingUp', () => {
         // console.log("上拉加载更多")
         this.$emit('pullingUp')
       })
+    }
 
     },
     methods: {
       scrollTo(x, y, time=300) {
-        this.scroll.scrollTo(x, y, time)
+        this.scroll && this.scroll.scrollTo(x, y, time)
       },
       finishPullUp() {
         this.scroll.finishPullUp()
       },
-      
+      refresh() {
+        // console.log('--')
+        this.scroll && this.scroll.refresh()
+      }
     },
 }
 </script>

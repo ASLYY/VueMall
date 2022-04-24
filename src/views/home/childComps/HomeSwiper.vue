@@ -2,7 +2,7 @@
   <swiper>
     <swiper-item v-for="item in banners" :key="item.title">
       <a :href="item.link">
-        <img :src="item.image">
+        <img :src="item.image" @load="imageLoad">
       </a>
     </swiper-item>
   </swiper>
@@ -23,8 +23,21 @@ export default {
           return []
         }
       },
-     
-  }
+  },
+  data() {
+    return {
+      isLoad: false
+    }
+  },
+  methods: {
+    // 只需要加载一次 去计算offsetTop
+    imageLoad() {
+      if(!this.isLoad) {
+        this.$emit('swiperImageLoad')
+        this.isLoad = true
+      }      
+    }
+  },
 }
 </script>
 <style scoped>
