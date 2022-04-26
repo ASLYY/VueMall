@@ -10,7 +10,8 @@
         <scroll class="content" ref="scroll" 
           :probe-type="3" @scroll="contentScroll"
           :pull-up-load="true" @pullingUp="loadMore">
-          <home-swiper :banners="banners" @swiperImageLoad="swiperImageLoad"></home-swiper>
+          <home-swiper :banners="banners" 
+            @swiperImageLoad="swiperImageLoad"></home-swiper>
           <recommend-view :recommends="recommends"></recommend-view>
           <feature-view ></feature-view>
           <!-- <tab-control :titles="['流行','新款','精选']" 
@@ -64,13 +65,13 @@ export default {
         isShowBackTop: false,
         tabOffsetTop: 0,
         isTabFixed: false,
+        saveY: 0,
       }
     },
     computed: {
       showGoods() {
         return this.goods[this.currenttype].list
-      }
-
+      },
     },
     created() {
       // 请求多个数据
@@ -78,18 +79,29 @@ export default {
       // 请求商品数据
       this.getHomeGoods('pop')
       this.getHomeGoods('new')
-      this.getHomeGoods('sell')
-
-      
-      
+      this.getHomeGoods('sell') 
     },
+    destroyed() {
+        console.log("home destroyed")
+      },
+    activated() {
+      console.log("home activated")
+      this.$refs.scroll.scrollTo(0, this.saveY, 0)
+      this.$refs.scroll.refresh()
+    },
+    deactivated() {
+      console.log("home deactivated")
+      this.saveY = this.$refs.scroll.getScrollY()
+      console.log(this.saveY)
+    },
+
     mounted() {
       // 图片完成加载的事件监听
-      const refresh = debounce(this.$refs.scroll.refresh, 200)
+      const ImageRefresh = debounce(this.$refs.scroll.refresh, 200)
       this.$bus.$on('itemImageLoad', () => {
         // console.log('----------')
         // this.$refs.scroll.refresh()
-        refresh()
+        ImageRefresh()
       })
 
       // 获取tabControl的offsetTop
